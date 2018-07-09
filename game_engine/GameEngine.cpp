@@ -6,9 +6,11 @@
 GameEngine::GameEngine() {
     this->width = 20;
     this->height= 20;
+    this->random = false;
     this->delay = 6;
     this->radius = 5;
     this->maxBombs = 10;
+    this->nbrPlayers = 4;
     this->generateBoard();
     this->instantiatePlayers();
 }
@@ -27,15 +29,65 @@ GameEngine::GameEngine(int width, int height, int delay, int radius, int maxBomb
     this->instantiatePlayers();
 }
 
+
 /**
  * Generate The board of the game
  */
-void GameEngine::generateBoard() {}
+void GameEngine::generateBoard() {
+    this->board = new char[this->height * this->width];
+    srand(time(NULL));
+    if(random==false) {
+        for (int r = 0; r < this->height; r++) {
+            for (int c = 0; c < this->width; c++) {
+                if ((r == 0 || r == this->height - 1) || (c == 0 || c == this->width - 1) || (c % 2 == 0 && r % 2 == 0)) {
+                    board[r * this->width + c] = '#';
+                } else {
+                    board[r * this->width + c] = '_';
+                }
+            }
+        }
+    }
+
+    else{
+        for (int r = 0; r < this->height; r++) {
+            for (int c = 0; c < this->width; c++) {
+                if ((r == 0 || r == this->height - 1) || (c == 0 || c == this->width - 1)) {
+                    board[r * this->width + c] = '#';
+                } else {
+                    if (board[r * this->width + c - 1] == '_' && board[r * this->width + c - this->width] == '_' &&  board[r * this->width + c - this->width - 1] == '_' && board[r * this->width + c - this->width + 1] == '_' && (rand() % 4 )> 0) {
+                        board[r * this->width + c] = '#';
+                    }
+
+                    else {
+                        board[r * this->width + c] = '_';
+                    }
+                }
+
+
+            }
+        }
+    }
+}
 
 /**
  * Instantiate the players with their position
  */
-void GameEngine::instantiatePlayers() {}
+void GameEngine::instantiatePlayers() {
+    for(int i=1; i<=this->nbrPlayers ; i++){
+        int x = rand() % this->height;
+        int y = rand() % this->width;
+        int pos = x*this->width+y;
+        char c= board[pos];
+        while (c != '_'){
+            pos++;
+            c=board[pos];
+            if(pos=this->height * this->width){
+                pos = 0;
+            }
+        }
+        board[pos] = (i+'0');
+    }
+}
 
 
 /**
@@ -54,7 +106,74 @@ void GameEngine::updateBoard(PlayerDict playersActions) {
  *
  * @param playersActions A dictionnary of PlayerID, Action to execute
  */
-void GameEngine::executePlayersActions(PlayerDict playersActions) {}
+void GameEngine::executePlayersActions(PlayerDict playersActions) {
+    for(int i=1; i<=this->nbrPlayers ; i++){
+        for (int r = 0; r < this->height*this->width; r++) {
+//pas de bombe sous le joueur
+            if(board[r] == (i + '0')) {
+                if (PlayerDict[i] == 'U') {
+                    if (board[r - this->width] == '_') {
+                        board[r - this->width] = (i + '0');
+                        board[r] = '_';
+                    }
+                }
+                if (PlayerDict[i] == 'D') {
+                    if (board[r + this->width] == '_') {
+                        board[r + this->width] = (i + '0');
+                        board[r] = '_';
+                    }
+                }
+                if (PlayerDict[i] == 'L') {
+                    if (board[r - 1] == '_') {
+                        board[r - 1] = (i + '0');
+                        board[r] = '_';
+                    }
+                }
+                if (PlayerDict[i] == 'R') {
+                    if (board[r - this->width] == '_') {
+                        board[r - this->width] = (i + '0');
+                        board[r] = '_';
+                    }
+                }
+            }
+
+//bombe sous le joueur
+            if(board[r] == ((i+4) + '0')) {
+                if (PlayerDict[i] == 'U') {
+                    if (board[r - this->width] == '_') {
+                        board[r - this->width] = (i + '0');
+                        board[r] = 'o';
+                    }
+                }
+                if (PlayerDict[i] == 'D') {
+                    if (board[r + this->width] == '_') {
+                        board[r + this->width] = (i + '0');
+                        board[r] = 'o';
+                    }
+                }
+                if (PlayerDict[i] == 'L') {
+                    if (board[r - 1] == '_') {
+                        board[r - 1] = (i + '0');
+                        board[r] = 'o';
+                    }
+                }
+                if (PlayerDict[i] == 'R') {
+                    if (board[r - this->width] == '_') {
+                        board[r - this->width] = (i + '0');
+                        board[r] = 'o';
+                    }
+                }
+            }
+
+//pose une bombe
+                if (PlayerDict[i] == 'B') {
+                    board[r] = ((i+4) + '0');
+                    }
+                }
+            }
+
+        }
+    }
 
 /**
  * Update all the bombs state in the board

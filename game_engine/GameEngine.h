@@ -6,7 +6,9 @@
 #include <string>
 #include <map>
 #include <tuple>
-
+#include <time.h>
+#include<stdio.h>
+#include<stdlib.h>
 
 typedef std::map<int, std::string> PlayerDict;  // Player ID, Action
 typedef std::map<int, std::tuple<int, int>> PlayerPosition;  // Player ID, Position (x,y)
@@ -23,6 +25,15 @@ class GameEngine {
         void updateBoard(PlayerDict playersActions);
         void play();
 
+        friend std::ostream& operator<<(std::ostream& out, const GameEngine& m){
+            for(int i=0 ; i<(m.width * m.height) ; i++){
+                out<<m.board[i]<<" ";
+                if(i%(m.height)==m.height -1){
+                    out<<std::endl;
+                }
+            }
+        }
+
 
     private:
         void executePlayersActions(PlayerDict playersActions);
@@ -33,10 +44,12 @@ class GameEngine {
         int turn;
         int width;
         int height;
+        bool random;
         int delay;
         int radius;
         int maxBombs;
-        int* board;
+        int nbrPlayers;
+        char* board;
         PlayerPosition players;
         BombState bombs;
 };
