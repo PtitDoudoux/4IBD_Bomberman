@@ -3,17 +3,21 @@
 
 
 #include <string>
+#include <iostream>
+#include <map>
+#include <ctime>
+
 
 
 class AI {
     public:
-        AI(int id, int *pos);
-        void move(char *tab);
-        void throwBomb();
+        AI();
+        void play();
 
     private:
         int id;
-        int &position;
+        std::map<std::string, std::string> config;
+        // int &position;
 };
 
 

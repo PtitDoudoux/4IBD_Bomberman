@@ -111,25 +111,25 @@ void GameEngine::executePlayersActions(PlayerDict playersActions) {
         for (int r = 0; r < this->height*this->width; r++) {
 //pas de bombe sous le joueur
             if(board[r] == (i + '0')) {
-                if (PlayerDict[i] == 'U') {
+                if (playersActions[i] == "U") {
                     if (board[r - this->width] == '_') {
                         board[r - this->width] = (i + '0');
                         board[r] = '_';
                     }
                 }
-                if (PlayerDict[i] == 'D') {
+                if (playersActions[i] == "D") {
                     if (board[r + this->width] == '_') {
                         board[r + this->width] = (i + '0');
                         board[r] = '_';
                     }
                 }
-                if (PlayerDict[i] == 'L') {
+                if (playersActions[i] == "L") {
                     if (board[r - 1] == '_') {
                         board[r - 1] = (i + '0');
                         board[r] = '_';
                     }
                 }
-                if (PlayerDict[i] == 'R') {
+                if (playersActions[i] == "R") {
                     if (board[r - this->width] == '_') {
                         board[r - this->width] = (i + '0');
                         board[r] = '_';
@@ -139,25 +139,25 @@ void GameEngine::executePlayersActions(PlayerDict playersActions) {
 
 //bombe sous le joueur
             if(board[r] == ((i+4) + '0')) {
-                if (PlayerDict[i] == 'U') {
+                if (playersActions[i] == "U") {
                     if (board[r - this->width] == '_') {
                         board[r - this->width] = (i + '0');
                         board[r] = 'o';
                     }
                 }
-                if (PlayerDict[i] == 'D') {
+                if (playersActions[i] == "D") {
                     if (board[r + this->width] == '_') {
                         board[r + this->width] = (i + '0');
                         board[r] = 'o';
                     }
                 }
-                if (PlayerDict[i] == 'L') {
+                if (playersActions[i] == "L") {
                     if (board[r - 1] == '_') {
                         board[r - 1] = (i + '0');
                         board[r] = 'o';
                     }
                 }
-                if (PlayerDict[i] == 'R') {
+                if (playersActions[i] == "R") {
                     if (board[r - this->width] == '_') {
                         board[r - this->width] = (i + '0');
                         board[r] = 'o';
@@ -166,15 +166,13 @@ void GameEngine::executePlayersActions(PlayerDict playersActions) {
             }
 
 //pose une bombe
-                if (PlayerDict[i] == 'B') {
+                if (playersActions[i] == "B") {
                     board[r] = ((i+4) + '0');
                     }
                 }
             }
 
         }
-    }
-
 /**
  * Update all the bombs state in the board
  */
