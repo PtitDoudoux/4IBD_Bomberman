@@ -13,6 +13,7 @@ class AI {
     public:
         AI();
         void play();
+        static void play2();
 
     private:
         int id;
