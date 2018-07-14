@@ -8,18 +8,19 @@
 #include <ctime>
 
 
-
 class AI {
     public:
         AI();
         void play();
-        static void play2();
 
     private:
         int id;
         std::map<std::string, std::string> config;
-        // int &position;
+        // int &position;  TODO: Handle it
 };
+
+
+void ai_play();
 
 
 #endif //BOMBERMAN_AI_H

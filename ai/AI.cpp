@@ -1,37 +1,44 @@
 #include "AI.h"
 
+
+/**
+ * Instanciate the IA with definied configuration
+ */
 AI::AI() {
     std::string::size_type sz;
     std::string gameEngineOutput;
     while (gameEngineOutput != "START players") std::cin >> gameEngineOutput;
-    // std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // START players
+    std::getline(std::cin, gameEngineOutput); // START players
     std::cin >> gameEngineOutput;  // Player ID
     this->id = std::stoi(gameEngineOutput, &sz);
-    std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // STOP players
-    std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // START settings
+    std::getline(std::cin, gameEngineOutput); // STOP players
+    std::getline(std::cin, gameEngineOutput); // START settings
     while (true) {
-        std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput);
+        std::getline(std::cin, gameEngineOutput);
         if (gameEngineOutput == "STOP settings") break;
         this->config[gameEngineOutput.substr(0, gameEngineOutput.find(' '))] = gameEngineOutput.substr(1, gameEngineOutput.find(' '));
     }
 }
 
+
+/**
+ * Let the 'AI' play !
+ */
 void AI::play() {
     std::srand(std::time(NULL));
     int width, height, i, action, turn;
     std::string::size_type sz;
     std::string gameEngineOutput;
     while (true) {
-        std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // START turn X
-        turn = std::stoi(gameEngineOutput, &sz);
-        // std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput);  // Getting Width height
-        // width = std::stoi(gameEngineOutput.substr(0, gameEngineOutput.find(' ')), &sz);
-        //height = std::stoi(gameEngineOutput.substr(1, gameEngineOutput.find(' ')), &sz);
-        // for (i=0; i < height; i++) std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // Read array, Skipping it
-        // std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // STOP turn X
+        std::getline(std::cin, gameEngineOutput); // START turn X
+        turn = std::stoi(gameEngineOutput.substr(2, gameEngineOutput.find(' ')), &sz);
+        std::getline(std::cin, gameEngineOutput);  // Getting Width height
+        width = std::stoi(gameEngineOutput.substr(0, gameEngineOutput.find(' ')), &sz);
+        height = std::stoi(gameEngineOutput.substr(1, gameEngineOutput.find(' ')), &sz);
+        for (i=0; i < height; i++) std::cin >> gameEngineOutput;  std::getline(std::cin, gameEngineOutput); // Read array, Skipping it
+        std::getline(std::cin, gameEngineOutput); // STOP turn X
         while (gameEngineOutput.find("STOP turn") != std::string::npos) std::cin >> gameEngineOutput;
-        // action = std::rand() % 5;
-        action = 3;
+        action = std::rand() % 5;
         if (action == 0) {
             // std::cout << "START actions " << turn << " U";
             std::cout << "START actions " << turn << std::endl;
@@ -72,7 +79,10 @@ void AI::play() {
 }
 
 
-void AI::play2() {
+/**
+ * 'AI' play without object orientation
+ */
+void ai_play() {
     std::srand(std::time(NULL));
     bool debug = false;
     int width, height, i, action, id, turn=1;
@@ -100,12 +110,11 @@ void AI::play2() {
         // turn = std::stoi(gameEngineOutput, &sz);
         // std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput);  // Getting Width height
         // width = std::stoi(gameEngineOutput.substr(0, gameEngineOutput.find(' ')), &sz);
-        //height = std::stoi(gameEngineOutput.substr(1, gameEngineOutput.find(' ')), &sz);
+        // height = std::stoi(gameEngineOutput.substr(1, gameEngineOutput.find(' ')), &sz);
         // for (i=0; i < height; i++) std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // Read array, Skipping it
         // std::cin >> gameEngineOutput;  // std::getline(std::cin, gameEngineOutput); // STOP turn X
         while (gameEngineOutput.find("STOP turn") != std::string::npos) std::getline(std::cin, gameEngineOutput);
         action = std::rand() % 5;
-        // action = 3;
         if (action == 0) {
             // std::cout << "START action " << turn << " U";
             std::cout << "START action " << turn << std::endl;
