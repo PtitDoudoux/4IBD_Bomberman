@@ -66,9 +66,9 @@ void GameEngine::updateBombs() {
 			this.bombList.delay= this.bombList.second-1; 
 		else
 			this.bombsToExplode.insert(bombList[i]);
-		
+
 		this.explodeAndKill()
-		
+
 	}
 
 /**
@@ -89,7 +89,7 @@ void GameEngine::updateBombs() {
 			coord = this.getCoordinate(realpos);
 			x=coord[0];
 			y=coord[1];
-			
+
 			board[realpos]='_'
 			this
 			deathCell = this.getDeathCell(x,y);	
@@ -259,9 +259,9 @@ void GameEngine::updateBombs() {
 					this.bombList.delay= this.bombList.second-1; 
 				else
 					this.bombsToExplode.insert(bombList[i]);
-				
+
 				this.explodeAndKill()
-				
+
 			}
 
 /**
@@ -282,7 +282,7 @@ void GameEngine::updateBombs() {
 					coord = this.getCoordinate(realpos);
 					x=coord[0];
 					y=coord[1];
-					
+
 					board[realpos]='_'
 					this
 					deathCell = this.getDeathCell(x,y);	
@@ -300,7 +300,7 @@ void GameEngine::updateBombs() {
 							y=coord[1];
 							newDeathCell = this.getDeathCell(x,y)
 							for(j=0;j<newDeathCell.size();j++)
-								deathCell.push_back(newDeathCell(j);
+								deathCell.push_back(newDeathCell(j));
 									case '1': { board[caseValue]='_';  } 
 									case '2': { board[caseValue]='_'; } 
 									case '3': { board[caseValue]='_'; }
@@ -310,10 +310,9 @@ void GameEngine::updateBombs() {
 
 							}
 						}
-						
+
 					}
 				}
-			}
 
 			int[] getCoordinate(pos)
 			{
