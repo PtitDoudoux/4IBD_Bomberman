@@ -109,19 +109,19 @@ void GameEngine::explodeAndKill() {
 					deathCell.push_back(newDeathCell(j));
 				}
 			}
-			case '1': { killPlayer();
+			case '1': { killPlayer(1);
 				   board[caseValue]='_';
 				  }
 			break;
-			case '2': { killPlayer();
+			case '2': { killPlayer(2);
 				   board[caseValue]='_';
 				  }
 			break;
-			case '3': { killPlayer();
+			case '3': { killPlayer(3);
 				   board[caseValue]='_';
 				  }
 			break;
-			case '4': { killPlayer();
+			case '4': { killPlayer(4);
 				   board[caseValue]='_';
 				  }
 			break;	
