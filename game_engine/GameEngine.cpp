@@ -61,15 +61,15 @@ void GameEngine::executePlayersActions(PlayerDict playersActions) {}
  */
 void GameEngine::updateBombs() {
 
-	for(i=0;i<this.bombList.size();i++)
+	for(i=0;i<this.bombList.size();i++){
 		if(this.bombList[i].second > 1)
 			this.bombList.delay= this.bombList.second-1; 
 		else
 			this.bombsToExplode.insert(bombList[i]);
 
 		this.explodeAndKill();
-
 	}
+}
 
 /**
  * Explode the bomb with no timer left and kill the player in the radius
