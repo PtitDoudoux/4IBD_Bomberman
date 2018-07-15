@@ -44,7 +44,7 @@ void GameEngine::instantiatePlayers() {}
  * @param playersActions A dictionnary of PlayerID, Action to execute
  */
 void GameEngine::updateBoard(PlayerDict playersActions) {
-	this->executePlayersActions(std::move(playersActions));
+	this->executePlayersActions(move(playersActions));
 	this->updateBombs();
 	this->explodeAndKill();
 }
@@ -61,13 +61,12 @@ void GameEngine::executePlayersActions(PlayerDict playersActions) {}
  */
 void GameEngine::updateBombs() {
 
-	for(i=0;i<this.bombList.size();i++){
-		if(this.bombList[i].second > 1)
-			this.bombList.delay= this.bombList.second-1; 
-		else
-			this.bombsToExplode.insert(bombList[i]);
+	BombList::iterator it;
+	for( it = this->bombList.begin(); it != this->bombList.end(); ++it ) {
+	if(it->delay > 1)
+		it->delay= it->delay-1; 
 
-		this.explodeAndKill();
+	this->explodeAndKill();
 	}
 }
 
@@ -76,22 +75,25 @@ void GameEngine::updateBombs() {
  */
 void GameEngine::explodeAndKill() {
 
-	int j=0;
+	int i,j=0;
 	int x,y;
-	int coord[];
-	std::vector<T> deathCell[];
-	std::vector<T> newdeathCell[];
+	int* coord;
+	vector <int> deathCell;
+	vector <int> newDeathCell;
 	int caseValue;	
-	int val;
+	int realpos;
 
-	for(i=0;i<this.bombsToExplode.size();i++){
-		realpos=this.bombsToExplode[i].first;
-		coord = this.getCoordinate(realpos);
+	BombList::iterator it;
+	for( it = this->bombList.begin(); it != this->bombList.end(); ++it){
+		if(it->delay==0){
+		realpos=it->pos;
+		coord = this->getCoordinate(realpos);
 		x=coord[0];
 		y=coord[1];
 
 		board[realpos]='_';
-		deathCell = this.getDeathCell(x,y);	
+		deathCell = this->getDeathCell(x,y);	
+		}
 	}
 
 	for(i=0;i<deathCell.size();i++){
@@ -101,28 +103,29 @@ void GameEngine::explodeAndKill() {
 			case '#': board[caseValue]='_';
 			break;
 			case 'o': {
-				coord = this.getCoordinate(caseValue);
+				coord = this->getCoordinate(caseValue);
 				x=coord[0];
 				y=coord[1];
-				newDeathCell = this.getDeathCell(x,y);
+				newDeathCell = this->getDeathCell(x,y);
 				for(j=0;j<newDeathCell.size();j++){
-					deathCell.push_back(newDeathCell(j));
+					deathCell.insert(newDeathCell.end(), newDeathCell.begin(), newDeathCell.end() );
+					//deathCell.push_back(newDeathCell(j));
 				}
 			}
-			case '1': { killPlayer(1);
-				   board[caseValue]='_';
+			case '1': { this->killPlayer(1);
+				    this->board[caseValue]='_';
 				  }
 			break;
-			case '2': { killPlayer(2);
-				   board[caseValue]='_';
+			case '2': { this->killPlayer(2);
+				    this->board[caseValue]='_';
 				  }
 			break;
-			case '3': { killPlayer(3);
-				   board[caseValue]='_';
+			case '3': { this->killPlayer(3);
+				    this->board[caseValue]='_';
 				  }
 			break;
-			case '4': { killPlayer(4);
-				   board[caseValue]='_';
+			case '4': { this->killPlayer(4);
+				    this->board[caseValue]='_';
 				  }
 			break;	
 				
@@ -135,12 +138,13 @@ void GameEngine::explodeAndKill() {
  * Return Coordinate with a position number 
  * @param pos the number position in the board
  */
-int[] GameEngine::getCoordinate(pos)
+int* GameEngine::getCoordinate(int pos)
 {
-	coord = [];
-	x = pos % this.width;
+	int x,y,j,p=0;
+	int *coord;
+	x = pos % this->width;
 	do{
-		p=this.width*j+x;
+		p=this->width*j+x;
 		j++;
 	}while(pos!=p);
 
@@ -155,11 +159,11 @@ int[] GameEngine::getCoordinate(pos)
  * Erase player from the board
  * @param playerId is identification number of the player
  */
-void GameEngine::killPlayer(playerId)
+void GameEngine::killPlayer(int playerId)
 {
   // erase fonctionne avec key sinon utiliser find puis "it.erase"
-	this.PlayerDict.erase(playerId)
-	this.PlayerPosition.erase(playerId)
+	this->playerDict.erase(playerId);
+	this->players.erase(playerId);
 }
 
 /**
@@ -167,25 +171,27 @@ void GameEngine::killPlayer(playerId)
  * @param x is position number in x-axis of the board
  * @param y is position number in y-axis of the board
  */
-std::vector<T> GameEngine::getDeathCell(x,y)
+vector<int> GameEngine::getDeathCell(int x,int y)
 {
-	int i=0;
-	std::vector<T> explosion;
-	int bombPos = y*this.width+x;
+	int i,l=0;
+	vector<int> explosion;
+	int bombPos = y*this->width+x;
 	int colDeath;
 
-	for(i=bombPos-this.radius;i<bombpos+this.radius;i>this.width*(y-1)+1;i>this.width*(y+1)-1;l++){
+	for(i=bombPos-this->radius;i<bombPos+this->radius && i>this->width*(y-1)+1 && i>this->width*(y+1)-1;l++){
+		//if(i>this.width*(y-1)+1 && i>this.width*(y+1)-1;)
+	
 		explosion.push_back(i);
 
-		if(l<=this.radius)
-			colDeath=bombPos-(this.radius-l)*this.width
+		if(l<=this->radius)
+			colDeath=bombPos-(this->radius-l)*this->width;
 		else
-			colDeath=bombPos+(l-this.radius)*this.width
+			colDeath=bombPos+(l-this->radius)*this->width;
 
-		if(colDeath > this.width+1 && colDeath<this.width*(this.height-1)-1)
-			explosion.push_back(bombPos-(this.radius-l)*this.width)
+		if(colDeath > this->width+1 && colDeath<this->width*(this->height-1)-1)
+			explosion.push_back(bombPos-(this->radius-l)*this->width);
 		else
-			explosion.push_back(bombPos+(l-this.radius)*this.width)
+			explosion.push_back(bombPos+(l-this->radius)*this->width);
 
 		return explosion;
 	}
@@ -214,5 +220,5 @@ void GameEngine::play() {
 		this->updateBoard(playerActions);
 		this->sendToDispatcher();
 	}
-	std::cout << "FINISHED !" << std::endl;
+	cout << "FINISHED !" << endl;
 }
