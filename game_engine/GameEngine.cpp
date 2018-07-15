@@ -119,7 +119,7 @@ void GameEngine::updateBombs() {
 	}
 
 
-	int[] getCoordinate(pos)
+	int[] GameEngine::getCoordinate(pos)
 	{
 		coord = [];
 		x = pos % this.width;
@@ -135,14 +135,14 @@ void GameEngine::updateBombs() {
 		return coord;
 	}
 
-	void killPlayer(playerId)
+	void GameEngine::killPlayer(playerId)
 	{
   // erase fonctionne avec key sinon utiliser find puis "it.erase"
 		this.PlayerDict.erase(playerId)
 		this.PlayerPosition.erase(playerId)
 	}
 
-	std::vector<T> getDeathCell(x,y)
+	std::vector<T> GameEngine::getDeathCell(x,y)
 	{
 		int i=0;
 		std::vector<T> explosion;
