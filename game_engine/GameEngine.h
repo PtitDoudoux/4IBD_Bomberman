@@ -1,17 +1,23 @@
 #ifndef BOMBERMAN_GAMEENGINE_H
 #define BOMBERMAN_GAMEENGINE_H
 
-
 #include <iostream>
 #include <string>
 #include <map>
 #include <tuple>
+#include <vector>
 
+using namespace std;
 
-typedef std::map<int, std::string> PlayerDict;  // Player ID, Action
-typedef std::map<int, std::tuple<int, int>> PlayerPosition;  // Player ID, Position (x,y)
-typedef std::map<int, int, std::tuple<int, int>> BombState;  // Delay left, Radius, Position (x,y)
+typedef map<int, string> PlayerDict;  // Player ID, Action
+typedef map<int, tuple<int, int>> PlayerPosition;  // Player ID, Position (x,y)
+typedef vector<struct bomb> BombList;
 
+struct bomb {
+  int delay;
+  int radius;
+  int pos;
+};
 
 class GameEngine {
 
@@ -30,6 +36,9 @@ class GameEngine {
         void explodeAndKill();
         void generateBoard();
         void instantiatePlayers();
+	int* getCoordinate(int pos);
+	void killPlayer(int playerId);
+	vector<int> getDeathCell(int x, int y);
         int turn;
         int width;
         int height;
@@ -38,7 +47,8 @@ class GameEngine {
         int maxBombs;
         int* board;
         PlayerPosition players;
-        BombState bombs;
+	PlayerDict playerDict;
+        BombList bombList;
 };
 
 
